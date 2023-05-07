@@ -9,7 +9,7 @@ class LLama:
 
     def __init__(self) -> None:
         
-        self.llm_predictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="text-davinci-003",max_tokens=1800))
+        self.llm_predictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="text-davinci-003",max_tokens=1800000))
         self.service_context = ServiceContext.from_defaults(llm_predictor=self.llm_predictor)
 
     # 查询本地索引
@@ -18,9 +18,9 @@ class LLama:
         # 加载索引
         local_index = GPTSimpleVectorIndex.load_from_disk(index_path)
         # 查询索引
-        res = local_index.query(prompt)
-
-        print(res)
+        res = local_index.query(prompt,mode="embedding")
+        resp = {"result":res}
+        print(resp)
 
 
     # 建立本地索引
@@ -43,7 +43,15 @@ if __name__ == '__main__':
     llama = LLama()
 
     # 建立索引
-    llama.create_index()
+    # llama.create_index()
 
     # 查询索引
-    llama.query_index("列出所有 API")
+    llama.query_index("白鹿原的作者是谁")
+    llama.query_index("白孝文的性格是怎样的")
+    llama.query_index("田小娥怎样死的")
+    llama.query_index("女性角色有多少名，他们的命运如何")
+    llama.query_index("帮我生成一个快排")
+
+
+
+
